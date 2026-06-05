@@ -15,19 +15,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: HomePage(),
+      home: TaskPage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class TaskPage extends StatefulWidget {
+  const TaskPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<TaskPage> createState() => _TaskPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _TaskPageState extends State<TaskPage> {
   List<String> tasks = [];
 
   void createTask(String title) {
