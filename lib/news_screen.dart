@@ -12,7 +12,7 @@ class NewsScreen extends StatefulWidget {
 
 class NewsScreenState extends State<NewsScreen> {
   List<String> news = [];
-  List<String> favs = [];
+  List<String> favorites = [];
 
   @override
   void initState() {
@@ -21,7 +21,6 @@ class NewsScreenState extends State<NewsScreen> {
     loadFavorites();
   }
 
-  // Este método hace de todo: Conecta, procesa y maneja errores
   Future<void> fetchNews() async {
     final response = await http.get(
       Uri.parse(
@@ -31,7 +30,6 @@ class NewsScreenState extends State<NewsScreen> {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final results = data['items'];
-      print(results);
       setState(() {
         results.forEach((n) {
           news.add(n['title']);
@@ -40,21 +38,20 @@ class NewsScreenState extends State<NewsScreen> {
     }
   }
 
-  // Lógica de negocio mezclada con persistencia local
   void saveFavorites(String article) async {
     final prefs = await SharedPreferences.getInstance();
-    List<String> favs = prefs.getStringList('favs') ?? [];
-    favs.contains(article) ? favs.remove(article) : favs.add(article);
-    await prefs.setStringList('favs', favs);
+    List<String> favorites = prefs.getStringList('favs') ?? [];
+    favorites.contains(article) ? favorites.remove(article) : favorites.add(article);
+    await prefs.setStringList('favorites', favorites);
 
-    this.favs = favs;
+    this.favorites = favorites;
     setState(() {});
   }
 
   void loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
-    List<String> favs = prefs.getStringList('favs') ?? [];
-    this.favs = favs;
+    List<String> favorites = prefs.getStringList('favorites') ?? [];
+    this.favorites = favorites;
     setState(() {});
   }
 
@@ -68,7 +65,7 @@ class NewsScreenState extends State<NewsScreen> {
           trailing: IconButton(
             icon: Icon(
               Icons.favorite,
-              color: favs.contains(news[i]) ? Colors.red : null,
+              color: favorites.contains(news[i]) ? Colors.red : null,
             ),
             onPressed: () => saveFavorites(news[i]),
           ),
