@@ -38,21 +38,25 @@ class NewsScreenState extends State<NewsScreen> {
     }
   }
 
-  void saveFavorites(String article) async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String> favorites = prefs.getStringList('favs') ?? [];
-    favorites.contains(article) ? favorites.remove(article) : favorites.add(article);
-    await prefs.setStringList('favorites', favorites);
-
-    this.favorites = favorites;
-    setState(() {});
-  }
-
   void loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
     List<String> favorites = prefs.getStringList('favorites') ?? [];
-    this.favorites = favorites;
-    setState(() {});
+    setState(() {
+      this.favorites = favorites;
+    });
+  }
+
+  void saveFavorites(String article) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> favorites = prefs.getStringList('favorites') ?? [];
+    favorites.contains(article)
+        ? favorites.remove(article)
+        : favorites.add(article);
+    await prefs.setStringList('favorites', favorites);
+
+    setState(() {
+      this.favorites = favorites;
+    });
   }
 
   @override
